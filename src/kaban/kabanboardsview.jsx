@@ -80,7 +80,7 @@ if (!Board) return;
         <div className="md:px-20 px-5 flex overflow-x-auto overflow-y-hidden items-start scrollbar flex-1 min-h-0 gap-18 py-2 mt-5">
           <DndContext
             sensors={sensors}
-            collisionDetection={closestCorners}
+            collisionDetection={closestCenter}
             onDragCancel={() => {
               setIsActive(null);
               setActiveList(null);
