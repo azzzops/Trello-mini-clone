@@ -1,0 +1,224 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+::view-transition-group(root) {
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-duration: 0.4s;
+}
+
+@theme {
+  /* ── Core ─────────────────────────────── */
+  --color-primary:    var(--primary);
+  --color-background: var(--background);
+  --color-letters:    var(--letters);
+  --color-toggle:     var(--toggle);
+
+  /* ── App surfaces ─────────────────────── */
+  --color-board-bg:   var(--board-bg);   /* the canvas behind all lists        */
+  --color-list-bg:    var(--list-bg);    /* each list column background         */
+  --color-card-bg:    var(--card-bg);    /* individual card background          */
+  --color-modal-bg:   var(--modal-bg);   /* modal / dialog box background       */
+  --color-overlay:    var(--overlay);    /* dark layer behind open modal        */
+  --color-navbar-bg:  var(--navbar-bg);  /* sticky top navbar                   */
+  --color-dropdown-bg:var(--dropdown-bg);/* headlessui menu panels              */
+
+  /* ── Generic surfaces ─────────────────── */
+  --color-surface:         var(--surface);
+  --color-surface-subtle:  var(--surface-subtle);
+  --color-surface-hover:   var(--surface-hover);
+  --color-surface-active:  var(--surface-active);
+  --color-surface-danger:  var(--surface-danger);
+  --color-surface-success: var(--surface-success);
+  --color-surface-warning: var(--surface-warning);
+  --color-surface-info:    var(--surface-info);
+
+  /* ── Text ─────────────────────────────── */
+  --color-text-primary:     var(--text-primary);
+  --color-text-secondary:   var(--text-secondary);
+  --color-text-muted:       var(--text-muted);
+  --color-text-faint:       var(--text-faint);
+  --color-text-placeholder: var(--text-placeholder);
+  --color-text-danger:      var(--text-danger);
+  --color-text-success:     var(--text-success);
+  --color-text-warning:     var(--text-warning);
+  --color-text-info:        var(--text-info);
+  --color-text-inverse:     var(--text-inverse);
+
+  /* ── Borders ──────────────────────────── */
+  --color-border:         var(--border);
+  --color-border-subtle:  var(--border-subtle);
+  --color-border-strong:  var(--border-strong);
+  --color-border-focus:   var(--border-focus);
+  --color-border-danger:  var(--border-danger);
+  --color-border-success: var(--border-success);
+  --color-border-warning: var(--border-warning);
+  --color-border-info:    var(--border-info);
+
+  /* ── Inputs ───────────────────────────── */
+  --color-input-bg:     var(--input-bg);
+  --color-input-border: var(--input-border);
+
+  /* ── Actions ──────────────────────────── */
+  --color-btn-primary:       var(--btn-primary);
+  --color-btn-primary-hover: var(--btn-primary-hover);
+  --color-btn-danger:        var(--btn-danger);
+  --color-btn-danger-hover:  var(--btn-danger-hover);
+
+  /* ── Drag & Drop ──────────────────────── */
+  --color-drag-overlay:    var(--drag-overlay);    /* card being dragged          */
+  --color-drop-target:     var(--drop-target);     /* list accepting a drop       */
+  --color-drop-placeholder:var(--drop-placeholder);/* empty slot while dragging  */
+
+  /* ── Fonts ────────────────────────────── */
+  --font-fontNavbar: 'IBM Plex Sans', sans-serif;
+  --font-fontBoard:  'Inter', sans-serif;
+  --font-Poppins:    'Poppins', sans-serif;
+  --font-Bricolage: 'Bricolage Grotesque', sans-serif;
+}
+
+@layer base {
+
+  /* ═══════════════════════════════════════
+     LIGHT MODE
+  ═══════════════════════════════════════ */
+  :root {
+    /* Core */
+    --background: #ffffff;
+    --primary:    #ffffff;
+    --letters:    #111827;
+    --toggle:     #f9fafb;
+
+    /* App surfaces */
+    --board-bg:    #f1f5f9;   /* slightly blue-gray — feels like a workspace   */
+    --list-bg:     #e9eef5;   /* one step darker than board, lists feel raised  */
+    --card-bg:     #ffffff;   /* white cards pop cleanly off the list bg        */
+    --modal-bg:    #ffffff;   /* ← use this for your edit modal box             */
+    --overlay:     #00000066; /* 40% black behind modal                         */
+    --navbar-bg:   #ffffff;   /* clean white navbar                             */
+    --dropdown-bg: #ffffff;   /* headlessui menu panels                         */
+
+    /* Generic surfaces */
+    --surface:         #ffffff;
+    --surface-subtle:  #f9fafb;
+    --surface-hover:   #f3f4f6;
+    --surface-active:  #e5e7eb;
+    --surface-danger:  #fef2f2;
+    --surface-success: #f0fdf4;
+    --surface-warning: #fffbeb;
+    --surface-info:    #eff6ff;
+
+    /* Text */
+    --text-primary:     #111827;
+    --text-secondary:   #374151;
+    --text-muted:       #6b7280;
+    --text-faint:       #9ca3af;
+    --text-placeholder: #d1d5db;
+    --text-danger:      #ef4444;
+    --text-success:     #16a34a;
+    --text-warning:     #d97706;
+    --text-info:        #2563eb;
+    --text-inverse:     #ffffff;
+
+    /* Borders */
+    --border:         #e5e7eb;
+    --border-subtle:  #f3f4f6;
+    --border-strong:  #d1d5db;
+    --border-focus:   #93c5fd;
+    --border-danger:  #fca5a5;
+    --border-success: #86efac;
+    --border-warning: #fcd34d;
+    --border-info:    #93c5fd;
+
+    /* Inputs */
+    --input-bg:     #ffffff;
+    --input-border: #d1d5db;
+
+    /* Actions */
+    --btn-primary:       #2563eb;
+    --btn-primary-hover: #1d4ed8;
+    --btn-danger:        #ef4444;
+    --btn-danger-hover:  #dc2626;
+
+    /* Drag & Drop */
+    --drag-overlay:     #ffffffcc; /* dragged card — slightly transparent white  */
+    --drop-target:      #dbeafe;   /* list glows blue when a card hovers over it */
+    --drop-placeholder: #e0e7ff;   /* the ghost slot where card will land        */
+  }
+
+  /* ═══════════════════════════════════════
+     DARK MODE
+  ═══════════════════════════════════════ */
+  .dark {
+    /* Core */
+    --background: #101010;
+    --primary:    #101010;
+    --letters:    #f9fafb;
+    --toggle:     #141414;
+
+    /* App surfaces — each layer gets slightly lighter */
+    --board-bg:    #161616;   /* darkest — the canvas                          */
+    --list-bg:     #1c1c1c;   /* list columns sit above board                  */
+    --card-bg:     #242424;   /* cards sit above lists                         */
+    --modal-bg:    #1e1e2e;   /* ← use this for your edit modal box            */
+    --overlay:     #000000aa; /* 67% black — darker in dark mode               */
+    --navbar-bg:   #141414;   /* same as toggle, navbar blends into shell      */
+    --dropdown-bg: #1e1e2e;   /* headlessui menu panels                        */
+
+    /* Generic surfaces */
+    --surface:         #1e1e2e;
+    --surface-subtle:  #ffffff0d;  /* white/5  */
+    --surface-hover:   #ffffff1a;  /* white/10 */
+    --surface-active:  #ffffff26;  /* white/15 */
+    --surface-danger:  #ef44441a;
+    --surface-success: #16a34a1a;
+    --surface-warning: #d974061a;
+    --surface-info:    #2563eb1a;
+
+    /* Text */
+    --text-primary:     #f9fafb;
+    --text-secondary:   #e5e7eb;
+    --text-muted:       #9ca3af;
+    --text-faint:       #6b7280;
+    --text-placeholder: #4b5563;
+    --text-danger:      #f87171;
+    --text-success:     #4ade80;
+    --text-warning:     #fbbf24;
+    --text-info:        #60a5fa;
+    --text-inverse:     #111827;
+
+    /* Borders */
+    --border:         #ffffff1a;  /* white/10 */
+    --border-subtle:  #ffffff0d;  /* white/5  */
+    --border-strong:  #ffffff33;  /* white/20 */
+    --border-focus:   #3b82f6;
+    --border-danger:  #f8717140;
+    --border-success: #4ade8040;
+    --border-warning: #fbbf2440;
+    --border-info:    #60a5fa40;
+
+    /* Inputs */
+    --input-bg:     #ffffff08;
+    --input-border: #ffffff1a;
+
+    /* Actions */
+    --btn-primary:       #3b82f6;
+    --btn-primary-hover: #2563eb;
+    --btn-danger:        #f87171;
+    --btn-danger-hover:  #ef4444;
+
+    /* Drag & Drop */
+    --drag-overlay:     #242424ee;  /* dragged card — semi-transparent dark   */
+    --drop-target:      #1e3a5f;    /* list accepts drop — deep blue glow     */
+    --drop-placeholder: #1e2d4a;    /* ghost slot                             */
+  }
+}
+
+* { scroll-behavior: smooth; }
+
+.scrollbar::-webkit-scrollbar { height: 6px; width: 5px; }
+.scrollbar::-webkit-scrollbar-track { background: transparent; }
+.scrollbar::-webkit-scrollbar-thumb { @apply bg-gray-600/30 rounded-full; }
+.scrollbar::-webkit-scrollbar-thumb:hover { @apply bg-gray-700/70 dark:bg-gray-400/30; }
