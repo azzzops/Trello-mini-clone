@@ -19,6 +19,7 @@ import {
   MouseSensor,
   closestCorners,
   rectIntersection,
+  PointerSensor,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -40,13 +41,13 @@ export default function SelectedBoardView() {
   const sensors = useSensors(
     useSensor(TouchSensor, {
       activationConstraint: {
-        delay: 250,
+        delay: 200,
         tolerance: 5,
       },
     }),
-    useSensor(MouseSensor, {
+    useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 10,
+        distance: 5,
       },
     }),
     useSensor(KeyboardSensor, {
@@ -226,8 +227,8 @@ if (!Board) return;
     const sourceBoard = active.data.current.BoardId;
     const destinationBoard = over.data.current.BoardId;
 
-      const sourceListId = active.data.current.ListId;
-      const destListId = over.data.current.Type === "list" ? over.id : over.data.current.ListId;
+    const sourceListId = active.data.current.ListId;
+    const destListId = over.data.current.Type === "list" ? over.id : over.data.current.ListId;
 
       if(sourceListId == destListId) return;
     

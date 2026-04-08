@@ -84,6 +84,7 @@ export default function MyProvider({ children }) {
     });
   }
   function handleSaveForCard() {
+    if(editData.title.trim() === "") return;
     useTrelloBoard((boards) => {
       return boards.map((board) => {
         if (board.id === editIds.boardId) {

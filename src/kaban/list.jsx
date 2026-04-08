@@ -129,10 +129,10 @@ export default function List({ title, children, cardLength, boardId, listId, onR
       {/* Cards */}
       <div className="flex flex-col gap-2" >
         {cardLength == 0 && 
-        <div {...attributes} ref={setActivatorNodeRef} className="flex items-center justify-center gap-1.5 w-full py-10 rounded-xl
+        <div {...attributes} ref={setActivatorNodeRef} className="flex items-center justify-center  rounded-xl
                      text-sm text-gray-400 dark:text-gray-600
                      border border-dashed border-gray-300 dark:border-white/10
-                     
+                      px-4 py-3 space-y-1.5
                      transition-colors duration-150" >
           <h1>drop item here</h1> 
         </div>}
