@@ -353,9 +353,10 @@ if (!Board) return;
     }
 
     if (
-      active.data.current.Type == "list" ||
+      active.data.current.Type == "list" &&
       over.data.current.Type == "list"
     ) {
+      
       const oldIndex = TrelloBoard.find(
         (board) => board.id == active?.data.current.BoardId,
       )?.list.findIndex((l) => l.id == active?.id);
