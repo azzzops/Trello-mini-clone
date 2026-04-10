@@ -37,7 +37,7 @@ export default function SelectedBoardView() {
   const [isActiveDetails, setIsActive] = useState(null);
   const [activeList, setActiveList] = useState(null);
   const Board = TrelloBoard.find((board) => board.id == selectedBoardId);
-  
+
   const sensors = useSensors(
     useSensor(TouchSensor, {
       activationConstraint: {
@@ -55,8 +55,7 @@ export default function SelectedBoardView() {
     }),
   );
 
-if (!Board) return;
-
+  if (!Board) return;
 
   return (
     <>
@@ -78,18 +77,23 @@ if (!Board) return;
           </div>
         </nav>
 
-        <div className="md:px-20 px-5 flex overflow-x-auto overflow-y-hidden items-start scrollbar flex-1 min-h-0 gap-18 py-2 mt-5">
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragCancel={() => {
-              setIsActive(null);
-              setActiveList(null);
-            }}
-            onDragOver={handleDragOver}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-          >
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragCancel={() => {
+            setIsActive(null);
+            setActiveList(null);
+          }}
+          autoScroll={{
+            threshold: { x: 0.15, y: 0.15 },
+            acceleration: 25,
+            speed: { x: 500, y: 300 },
+          }}
+          onDragOver={handleDragOver}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
+          <div className="md:px-20 px-5 flex overflow-x-auto overflow-y-hidden items-start scrollbar flex-1 min-h-0 gap-18 py-2 mt-5">
             <SortableContext
               strategy={horizontalListSortingStrategy}
               items={Board?.list}
@@ -155,156 +159,158 @@ if (!Board) return;
                 </ListOverlay>
               ) : null}
             </DragOverlay>
-          </DndContext>
 
-          <div className="font-fontNavbar shrink-0 w-60">
-            {isCreatingCard ? (
-              <div className="flex flex-col gap-2">
-                <input
-                  autoFocus
-                  type="text"
-                  placeholder="List title..."
-                  value={newCardTitle}
-                  onChange={(e) => setTitle(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") handleNewCard(Board.id);
-                    if (e.key === "Escape") setIsCreatingCard(false);
-                  }}
-                  className="w-full px-3 py-2 text-sm rounded-xl
+            <div className="font-fontNavbar shrink-0 w-60">
+              {isCreatingCard ? (
+                <div className="flex flex-col gap-2">
+                  <input
+                    autoFocus
+                    type="text"
+                    placeholder="List title..."
+                    value={newCardTitle}
+                    onChange={(e) => setTitle(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleNewCard(Board.id);
+                      if (e.key === "Escape") setIsCreatingCard(false);
+                    }}
+                    className="w-full px-3 py-2 text-sm rounded-xl
                    bg-white dark:bg-white/5
                    border border-gray-200 dark:border-white/10
                    text-gray-900 dark:text-gray-100
                    placeholder:text-gray-400 dark:placeholder:text-gray-600
                    focus:outline-none focus:ring-2 focus:ring-blue-500/40
                    transition-colors"
-                />
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setIsCreatingCard(false)}
-                    className="flex items-center justify-center w-7 h-7 rounded-lg
+                  />
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setIsCreatingCard(false)}
+                      className="flex items-center justify-center w-7 h-7 rounded-lg
                      text-gray-400 hover:text-gray-700 dark:hover:text-gray-200
                      hover:bg-gray-100 dark:hover:bg-white/10
                      transition-colors"
-                  >
-                    <X size={14} strokeWidth={2.5} />
-                  </button>
-                  <button
-                    onClick={() => handleNewCard(Board.id)}
-                    className="flex items-center justify-center w-7 h-7 rounded-lg
+                    >
+                      <X size={14} strokeWidth={2.5} />
+                    </button>
+                    <button
+                      onClick={() => handleNewCard(Board.id)}
+                      className="flex items-center justify-center w-7 h-7 rounded-lg
                      bg-blue-500 hover:bg-blue-600
                      text-white transition-colors"
-                  >
-                    <Check size={14} strokeWidth={2.5} />
-                  </button>
+                    >
+                      <Check size={14} strokeWidth={2.5} />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <button
-                onClick={() => setIsCreatingCard(true)}
-                className="flex items-center justify-center gap-1.5 w-full py-2 rounded-xl
+              ) : (
+                <button
+                  onClick={() => setIsCreatingCard(true)}
+                  className="flex items-center justify-center gap-1.5 w-full py-2 rounded-xl
                  text-sm text-gray-400 dark:text-gray-600
                  border border-dashed border-gray-300 dark:border-white/10
                  
                  transition-colors duration-150"
-              >
-                <Plus size={15} strokeWidth={2.5} />
-                New List
-              </button>
-            )}
+                >
+                  <Plus size={15} strokeWidth={2.5} />
+                  New List
+                </button>
+              )}
+            </div>
           </div>
-        </div>
+        </DndContext>
       </div>
       <EditSection />
     </>
   );
 
-  function handleDragOver(event){
-    const {active, over} = event;
+  function handleDragOver(event) {
+    const { active, over } = event;
 
-    if(!over) return
-    if(active.id == over.id) return;
+    if (!over) return;
+    if (active.id == over.id) return;
 
     const sourceBoard = active.data.current.BoardId;
     const destinationBoard = over.data.current.BoardId;
 
     const sourceListId = active.data.current.ListId;
-    const destListId = over.data.current.Type === "list" ? over.id : over.data.current.ListId;
+    const destListId =
+      over.data.current.Type === "list" ? over.id : over.data.current.ListId;
 
-      if(sourceListId == destListId) return;
-    
-    const sourceItem = TrelloBoard.find(board => board.id == sourceBoard)?.list.find(l => l.id == active.data.current.ListId)?.cards.find(c => c.id == active.id);
-      if (!sourceItem) return;
+    if (sourceListId == destListId) return;
 
-    const cardHoveredOnDestination = TrelloBoard.find(board => board.id == destinationBoard)?.list.find(l => l.id == over.data.current.ListId);
+    const sourceItem = TrelloBoard.find((board) => board.id == sourceBoard)
+      ?.list.find((l) => l.id == active.data.current.ListId)
+      ?.cards.find((c) => c.id == active.id);
+    if (!sourceItem) return;
 
-    const destListContainer = TrelloBoard.find(board => board.id == destinationBoard)?.list.find(l => l.id == over.id);
+    const cardHoveredOnDestination = TrelloBoard.find(
+      (board) => board.id == destinationBoard,
+    )?.list.find((l) => l.id == over.data.current.ListId);
 
-    const sliceIndex = over.data.current.Type == "list" ? destListContainer.cards.length : cardHoveredOnDestination?.cards.findIndex(c => c.id == over.id) == -1 ? cardHoveredOnDestination.cards.length : cardHoveredOnDestination?.cards.findIndex(c => c.id == over.id);
+    const destListContainer = TrelloBoard.find(
+      (board) => board.id == destinationBoard,
+    )?.list.find((l) => l.id == over.id);
 
-    if(sourceBoard == destinationBoard){
+    const sliceIndex =
+      over.data.current.Type == "list"
+        ? destListContainer.cards.length
+        : cardHoveredOnDestination?.cards.findIndex((c) => c.id == over.id) ==
+            -1
+          ? cardHoveredOnDestination.cards.length
+          : cardHoveredOnDestination?.cards.findIndex((c) => c.id == over.id);
+
+    if (sourceBoard == destinationBoard) {
       useTrelloBoard((boards) => {
-
-        return boards.map(board => {
-
-          if(board.id == sourceBoard){
+        return boards.map((board) => {
+          if (board.id == sourceBoard) {
             return {
-              ...board, 
+              ...board,
               list: [
-                  ...board.list.map(l => {
-                    if(l.id == active.data.current.ListId){   
-               
-                        return {
-                          ...l,
-                          cards: [
-                            ...l.cards.filter(c => c.id !== sourceItem.id)
-                          ]
-                        }
-                    }
-                    
-                    if(over.data.current.Type == "list"){
-                      if(l.id === over.id){
-                          return {
-                            ...l, 
-                            cards: [
-                              ...l.cards.slice(0, sliceIndex),
-                              sourceItem,
-                              ...l.cards.slice(sliceIndex)
-                            ]
-                          }
-                      }
+                ...board.list.map((l) => {
+                  if (l.id == active.data.current.ListId) {
+                    return {
+                      ...l,
+                      cards: [...l.cards.filter((c) => c.id !== sourceItem.id)],
+                    };
+                  }
 
+                  if (over.data.current.Type == "list") {
+                    if (l.id === over.id) {
+                      return {
+                        ...l,
+                        cards: [
+                          ...l.cards.slice(0, sliceIndex),
+                          sourceItem,
+                          ...l.cards.slice(sliceIndex),
+                        ],
+                      };
                     }
+                  }
 
-                    if(over.data.current.Type == "card"){
-                      if(l.id === over.data.current.ListId){
-                          return {
-                            ...l, 
-                            cards: [
-                              ...l.cards.slice(0, sliceIndex),
-                              sourceItem,
-                              ...l.cards.slice(sliceIndex)
-                            ]
-                          }
-                      }
+                  if (over.data.current.Type == "card") {
+                    if (l.id === over.data.current.ListId) {
+                      return {
+                        ...l,
+                        cards: [
+                          ...l.cards.slice(0, sliceIndex),
+                          sourceItem,
+                          ...l.cards.slice(sliceIndex),
+                        ],
+                      };
                     }
+                  }
 
-                    return l;
-                  })
-              ]
-            }
-          } else{
-            return board
+                  return l;
+                }),
+              ],
+            };
+          } else {
+            return board;
           }
-
-        })
-
-
-      })
+        });
+      });
     }
-   
-
   }
-  
+
   function handleDragEnd(event) {
     setIsActive(null);
     setActiveList(null);
@@ -319,14 +325,14 @@ if (!Board) return;
       active.data.current.Type == "card" &&
       over.data.current.Type == "card"
     ) {
-      const currentList = TrelloBoard
-      .find(board => board.id == active.data.current.BoardId)
-      ?.list.find(l => l.cards.some(c => c.id == active.id));
+      const currentList = TrelloBoard.find(
+        (board) => board.id == active.data.current.BoardId,
+      )?.list.find((l) => l.cards.some((c) => c.id == active.id));
 
-    if (!currentList) return;
+      if (!currentList) return;
 
-    const oldIndex = currentList.cards.findIndex(c => c.id == active.id);
-    const newIndex = currentList.cards.findIndex(c => c.id == over.id);
+      const oldIndex = currentList.cards.findIndex((c) => c.id == active.id);
+      const newIndex = currentList.cards.findIndex((c) => c.id == over.id);
       useTrelloBoard((boards) => {
         return boards.map((board) => {
           if (board.id === active?.data.current.BoardId) {
@@ -356,7 +362,6 @@ if (!Board) return;
       active.data.current.Type == "list" &&
       over.data.current.Type == "list"
     ) {
-      
       const oldIndex = TrelloBoard.find(
         (board) => board.id == active?.data.current.BoardId,
       )?.list.findIndex((l) => l.id == active?.id);
@@ -379,7 +384,7 @@ if (!Board) return;
     }
   }
 
-    function handleNewCard(id) {
+  function handleNewCard(id) {
     if (newCardTitle.trim() == "") return;
     useTrelloBoard((boards) => {
       return boards.map((board) => {
@@ -399,7 +404,6 @@ if (!Board) return;
     setIsCreatingCard(false);
     setTitle("");
   }
-  
 
   function handleDragStart(event) {
     const { active, over } = event;
@@ -422,6 +426,4 @@ if (!Board) return;
       setIsActive(null);
     }
   }
-
-
 }
