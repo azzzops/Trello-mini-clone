@@ -20,6 +20,7 @@ import {
   closestCorners,
   rectIntersection,
   PointerSensor,
+  AutoScrollActivator,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -85,15 +86,16 @@ export default function SelectedBoardView() {
             setActiveList(null);
           }}
           autoScroll={{
-            threshold: { x: 0.15, y: 0.15 },
-            acceleration: 25,
-            speed: { x: 500, y: 300 },
+            thresholds: { x: 0.25, y: 0.15 },
+            acceleration: 30,
+            interval: 5,
+            activator: AutoScrollActivator.Pointer,
           }}
           onDragOver={handleDragOver}
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
-          <div className="md:px-20 px-5 flex overflow-x-auto overflow-y-hidden items-start scrollbar flex-1 min-h-0 gap-18 py-2 mt-5">
+          <div className="md:px-20 px-5 flex overflow-x-auto overflow-y-hidden items-start scrollbar flex-1 min-h-0 gap-18 py-2 mt-5" style={{ scrollBehavior: 'auto' }}>
             <SortableContext
               strategy={horizontalListSortingStrategy}
               items={Board?.list}
