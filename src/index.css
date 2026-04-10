@@ -216,7 +216,6 @@
   }
 }
 
-* { scroll-behavior: auto; }
 
 .scrollbar::-webkit-scrollbar { height: 6px; width: 5px; }
 .scrollbar::-webkit-scrollbar-track { background: transparent; }

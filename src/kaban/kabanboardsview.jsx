@@ -85,12 +85,7 @@ export default function SelectedBoardView() {
             setIsActive(null);
             setActiveList(null);
           }}
-          autoScroll={{
-            thresholds: { x: 0.25, y: 0.15 },
-            acceleration: 30,
-            interval: 5,
-            activator: AutoScrollActivator.Pointer,
-          }}
+          
           onDragOver={handleDragOver}
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
